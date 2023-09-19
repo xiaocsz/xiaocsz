@@ -68,3 +68,27 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+// 函数用于计算两个字符串的相似度
+double calculateSimilarity(const char *str1, const char *str2) {
+    int len1 = strlen(str1);
+    int len2 = strlen(str2);
+
+    // 创建一个二维数组来存储子问题的解
+    int dp[len1 + 1][len2 + 1];
+
+    // 填充二维数组
+    for (int i = 0; i <= len1; i++) {
+        for (int j = 0; j <= len2; j++) {
+            if (i == 0 || j == 0)
+                dp[i][j] = 0;
+            else if (str1[i - 1] == str2[j - 1])
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            else
+                dp[i][j] = (dp[i - 1][j] > dp[i][j - 1]) ? dp[i - 1][j] : dp[i][j - 1];
+        }
+    }
+
+    // 计算相似度
+    double similarity = (double)dp[len1][len2] / len1;
+    return similarity;
+}
